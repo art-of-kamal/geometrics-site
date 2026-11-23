@@ -1,5 +1,3 @@
-// Place any global data in this file.
-// You can import this data from anywhere in your site by using the `import` keyword.
-
-export const SITE_TITLE = 'Astro Blog';
-export const SITE_DESCRIPTION = 'Welcome to my website!';
+export const SITE_TITLE = 'GeoMetrics';
+export const SITE_DESCRIPTION =
+  'Independent GEO and AI search visibility benchmarks across ChatGPT, Perplexity, Claude, Gemini, and Google AI Overviews.';

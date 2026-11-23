@@ -1,112 +1,184 @@
 ---
-import { Image } from 'astro:assets';
 import { getCollection } from 'astro:content';
-import BaseHead from '../../components/BaseHead.astro';
-import Footer from '../../components/Footer.astro';
-import FormattedDate from '../../components/FormattedDate.astro';
-import Header from '../../components/Header.astro';
-import { SITE_DESCRIPTION, SITE_TITLE } from '../../consts';
+import { SITE_TITLE, SITE_DESCRIPTION } from '../../consts';
 
 const posts = (await getCollection('blog')).sort(
-	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
 );
 ---
 
 <!doctype html>
 <html lang="en">
-	<head>
-		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
-		<style>
-			main {
-				width: 960px;
-			}
-			ul {
-				display: flex;
-				flex-wrap: wrap;
-				gap: 2rem;
-				list-style-type: none;
-				margin: 0;
-				padding: 0;
-			}
-			ul li {
-				width: calc(50% - 1rem);
-			}
-			ul li * {
-				text-decoration: none;
-				transition: 0.2s ease;
-			}
-			ul li:first-child {
-				width: 100%;
-				margin-bottom: 1rem;
-				text-align: center;
-			}
-			ul li:first-child img {
-				width: 100%;
-			}
-			ul li:first-child .title {
-				font-size: 2.369rem;
-			}
-			ul li img {
-				margin-bottom: 0.5rem;
-				border-radius: 12px;
-			}
-			ul li a {
-				display: block;
-			}
-			.title {
-				margin: 0;
-				color: rgb(var(--black));
-				line-height: 1;
-			}
-			.date {
-				margin: 0;
-				color: rgb(var(--gray));
-			}
-			ul li a:hover h4,
-			ul li a:hover .date {
-				color: rgb(var(--accent));
-			}
-			ul a:hover img {
-				box-shadow: var(--box-shadow);
-			}
-			@media (max-width: 720px) {
-				ul {
-					gap: 0.5em;
-				}
-				ul li {
-					width: 100%;
-					text-align: center;
-				}
-				ul li:first-child {
-					margin-bottom: 0;
-				}
-				ul li:first-child .title {
-					font-size: 1.563em;
-				}
-			}
-		</style>
-	</head>
-	<body>
-		<Header />
-		<main>
-			<section>
-				<ul>
-					{posts.map((post) => (
-						<li>
-							<a href={`/blog/${post.id}/`}>
-								{post.data.heroImage && (
-									<Image width={720} height={360} src={post.data.heroImage} alt="" />
-								)}
-								<h4 class="title">{post.data.title}</h4>
-								<p class="date">
-									<FormattedDate date={post.data.pubDate} />
-								</p>
-							</a>
-						</li>
-					))}
-				</ul>
-			</section>
-		</main>
-		<Footer />
-	</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Blog — {SITE_TITLE}</title>
+    <meta name="description" content={SITE_DESCRIPTION} />
+    <link
+      rel="icon"
+      type="image/svg+xml"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%232563eb'/%3E%3Ctext x='50%25' y='54%25' dominant-baseline='middle' text-anchor='middle' fill='%23ffffff' font-family='-apple-system, sans-serif' font-size='18' font-weight='700'%3EG%3C/text%3E%3C/svg%3E"
+    />
+    <style>
+      :root {
+        --bg: #ffffff;
+        --surface: #f8fafc;
+        --border: #e2e8f0;
+        --text: #0f172a;
+        --muted: #475569;
+        --accent: #2563eb;
+      }
+      * { box-sizing: border-box; margin: 0; padding: 0; }
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Inter, sans-serif;
+        background: var(--bg);
+        color: var(--text);
+        line-height: 1.6;
+      }
+      a { color: inherit; text-decoration: none; }
+      .container { max-width: 860px; margin: 0 auto; padding: 0 24px; }
+
+      header {
+        border-bottom: 1px solid var(--border);
+        background: #fff;
+      }
+      .nav {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        height: 68px;
+      }
+      .logo {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 1.12rem;
+        font-weight: 700;
+      }
+      .logo-mark {
+        width: 28px;
+        height: 28px;
+        border-radius: 7px;
+        background: var(--accent);
+        color: #fff;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.95rem;
+        font-weight: 800;
+      }
+      .btn-nav {
+        background: var(--text);
+        color: #fff;
+        padding: 9px 16px;
+        border-radius: 8px;
+        font-size: 0.88rem;
+        font-weight: 600;
+      }
+
+      .blog-head {
+        padding: 56px 0 36px;
+        border-bottom: 1px solid var(--border);
+      }
+      .eyebrow {
+        font-size: 0.78rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        color: var(--accent);
+        margin-bottom: 8px;
+      }
+      h1 {
+        font-size: clamp(1.9rem, 4vw, 2.5rem);
+        letter-spacing: -0.03em;
+        margin-bottom: 10px;
+      }
+      .blog-head p { color: var(--muted); max-width: 580px; }
+
+      .post-list {
+        padding: 36px 0 72px;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+      }
+      .post-card {
+        display: block;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 26px;
+        transition: border-color 0.15s ease;
+      }
+      .post-card:hover { border-color: var(--accent); }
+      .post-date {
+        font-size: 0.82rem;
+        color: var(--muted);
+        margin-bottom: 6px;
+      }
+      .post-card h2 {
+        font-size: 1.3rem;
+        letter-spacing: -0.02em;
+        margin-bottom: 8px;
+      }
+      .post-card p {
+        font-size: 0.95rem;
+        color: var(--muted);
+      }
+
+      footer {
+        border-top: 1px solid var(--border);
+        padding: 28px 0;
+        font-size: 0.86rem;
+        color: var(--muted);
+        display: flex;
+        justify-content: space-between;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="container nav">
+        <a href="/" class="logo">
+          <span class="logo-mark">G</span>
+          GeoMetrics
+        </a>
+        <a href="/#request" class="btn-nav">Check Your Brand</a>
+      </div>
+    </header>
+
+    <main class="container">
+      <div class="blog-head">
+        <div class="eyebrow">GeoMetrics Research</div>
+        <h1>AI Search & GEO Insights</h1>
+        <p>
+          Notes, benchmarks, and research on how ChatGPT, Perplexity, Claude,
+          and Google AI Overviews decide which brands to recommend.
+        </p>
+      </div>
+
+      <div class="post-list">
+        {posts.map((post) => {
+          const slug = post.slug ?? post.id.replace(/\.mdx?$/, '');
+          return (
+            <a href={`/blog/${slug}/`} class="post-card">
+              <div class="post-date">
+                {post.data.pubDate.toLocaleDateString('en-US', {
+                  year: 'numeric',
+                  month: 'short',
+                  day: 'numeric',
+                })}
+              </div>
+              <h2>{post.data.title}</h2>
+              <p>{post.data.description}</p>
+            </a>
+          );
+        })}
+      </div>
+    </main>
+
+    <footer class="container">
+      <span>© 2026 GeoMetrics</span>
+      <a href="/">Home</a>
+    </footer>
+  </body>
 </html>
